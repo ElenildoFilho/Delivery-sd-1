@@ -1,0 +1,93 @@
+/* Aplica ao body e html: ocupa toda a tela e remove scroll */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Container de fundo */
+.login-box {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ef3e10, #10c1ef);
+  box-sizing: border-box;
+  padding: 2rem;
+}
+
+/* Formulário */
+form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Título */
+form h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #ef3e10;
+  text-align: center;
+}
+
+/* Inputs */
+input {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #10c1ef;
+  outline: none;
+}
+
+/* Botão */
+button {
+  padding: 0.9rem;
+  background-color: #ef3e10;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #cc2f08;
+}
+
+/* Mensagem de erro/sucesso */
+p {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+}
+
+/* Links */
+a {
+  color: #10c1ef;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}

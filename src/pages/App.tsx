@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from '../pages/Login';
 import About from '../pages/About';
 import Register from '../components/Register/Register';
-import ProductsList from '../pages/ProductsPage'; // importando a página com fetch real
+import UserProfile from '../pages/UserProfile';
+import ProductsList from '../pages/ProductsPage'; 
+import OrderHistory from './OrderHistory';
 
 function App() {
   return (
@@ -12,8 +14,11 @@ function App() {
       <Navbar title="" />
       <Routes>
         <Route path="/" element={<ProductsList />} />
-        <Route path="/produtos" element={<ProductsList />} /> {/* rota alternativa para produtos */}
+        <Route path="/produtos" element={<ProductsList />} /> {}
         <Route path="/login" element={<Login />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/history" element={<OrderHistory />} />
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
       </Routes>

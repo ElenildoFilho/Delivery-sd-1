@@ -17,10 +17,9 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
       setIsLoggedIn(!!token)
     }
 
-    // Atualiza quando evento 'authChanged' for disparado
     window.addEventListener('authChanged', updateLoginStatus)
 
-    // Roda na montagem
+
     updateLoginStatus()
 
     return () => {
@@ -50,6 +49,15 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
         </li>
         <li>
           <Link to="/register">Registro</Link>
+        </li>
+        <li>
+          <Link to="/profile">Perfil</Link>
+        </li>
+        <li>
+          <Link to="/history">Histórico</Link>
+        </li>
+        <li>
+          <Link to="/">Produtos</Link>
         </li>
         {isLoggedIn ? (
           <li>

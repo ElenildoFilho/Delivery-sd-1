@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './LoginBox.module.css' // ← CORRETO com CSS Module
+import styles from './LoginBox.module.css' 
 import { Link } from 'react-router-dom';
 
 interface LoginBoxProps {

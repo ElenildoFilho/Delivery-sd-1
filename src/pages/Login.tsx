@@ -1,40 +1,53 @@
+// src/components/LoginBox/LoginBox.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LoginBox from '../components/LoginBox/LoginBox';
-import { login } from '../api/auth';
+import styles from './Login.module.css';
 
-function Login() {
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
+interface Props {
+  onLogin: (email: string, password: string) => void;
+  error?: string;
+  success?: boolean;
+}
 
-  async function handleLogin(email: string, password: string) {
-    try {
-      const { token } = await login(email, password);
-      localStorage.setItem('token', token);
-      window.dispatchEvent(new Event('authChanged'))
-      setSuccess(true);
-      setError(null);
+const LoginBox: React.FC<Props> = ({ onLogin, error, success }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-      // Mostra sucesso por 1.5s antes de navegar
-      setTimeout(() => {
-        navigate('/');
-      }, 1500);
-      
-    } catch (err: any) {
-      console.error('Erro detalhado no login:', err);
-      setError(err.message || 'Usuário ou senha inválidos!');
-      setSuccess(false);
-    }
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    onLogin(email, password);
   }
 
   return (
-    <LoginBox
-      onLogin={handleLogin}
-      error={error || undefined}
-      success={success}
-    />
-  );
-}
+    <div className={styles['login-box']}>
+      <form onSubmit={handleSubmit}>
+        <h2>Login</h2>
 
-export default Login;
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Senha"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">Entrar</button>
+
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p style={{ color: 'green' }}>Login realizado com sucesso!</p>}
+
+        <p>
+          Ainda não tem uma conta? <a href="/register">Cadastre-se</a>
+        </p>
+      </form>
+    </div>
+  );
+};
+
+export default LoginBox;
