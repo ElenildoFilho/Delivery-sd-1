@@ -20,6 +20,9 @@ const UserProfile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Campos editáveis
+  const [formData, setFormData] = useState<UserProfileData | null>(null);
+
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');
@@ -38,18 +41,15 @@ const UserProfile: React.FC = () => {
         });
 
         if (!res.ok) {
-          if (res.status === 401) {
-            setError('Sessão expirada. Faça login novamente.');
-          } else {
-            const err = await res.json();
-            setError(err.message || 'Erro ao buscar perfil.');
-          }
+          const err = await res.json();
+          setError(err.message || 'Erro ao buscar perfil.');
           setLoading(false);
           return;
         }
 
         const data = await res.json();
         setUser(data.user);
+        setFormData(data.user);
       } catch (err: any) {
         setError(err.message || 'Erro ao buscar perfil.');
       } finally {
@@ -60,19 +60,32 @@ const UserProfile: React.FC = () => {
     fetchProfile();
   }, []);
 
-  if (loading) {
-    return <p>Carregando perfil...</p>;
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-  if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
-  }
+    if (!formData) return;
 
-  if (!user) {
-    return null;
-  }
+    if (name in (formData.address || {})) {
+      setFormData({
+        ...formData,
+        address: {
+          ...formData.address,
+          [name]: value,
+        },
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
 
-  const { profilePictureUrl, address } = user;
+  if (loading) return <p>Carregando perfil...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (!user || !formData) return null;
+
+  const { profilePictureUrl, address } = formData;
 
   return (
     <div className={styles.container}>
@@ -82,7 +95,7 @@ const UserProfile: React.FC = () => {
         {profilePictureUrl ? (
           <img
             src={profilePictureUrl}
-            alt={`${user.name} - Foto de perfil`}
+            alt={`${formData.name} - Foto de perfil`}
             className={styles.profilePicture}
           />
         ) : (
@@ -90,19 +103,42 @@ const UserProfile: React.FC = () => {
         )}
 
         <div className={styles.userDetails}>
-          <p><strong>Nome:</strong> {user.name}</p>
-          <p><strong>Email:</strong> {user.email}</p>
+          <label>
+            Nome:
+            <input type="text" name="name" value={formData.name} onChange={handleChange} />
+          </label>
+          <label>
+            Email:
+            <input type="email" name="email" value={formData.email} onChange={handleChange} />
+          </label>
         </div>
       </div>
 
       <h3 className={styles.sectionTitle}>Endereço</h3>
       <div className={styles.address}>
-        <p><strong>Rua:</strong> {address?.street || '-'}</p>
-        <p><strong>Número:</strong> {address?.number || '-'}</p>
-        <p><strong>Complemento:</strong> {address?.complement || '-'}</p>
-        <p><strong>Apartamento:</strong> {address?.apartment || '-'}</p>
-        <p><strong>CEP:</strong> {address?.cep || '-'}</p>
+        <label>
+          Rua:
+          <input type="text" name="street" value={address?.street || ''} onChange={handleChange} />
+        </label>
+        <label>
+          Número:
+          <input type="text" name="number" value={address?.number || ''} onChange={handleChange} />
+        </label>
+        <label>
+          Complemento:
+          <input type="text" name="complement" value={address?.complement || ''} onChange={handleChange} />
+        </label>
+        <label>
+          Apartamento:
+          <input type="text" name="apartment" value={address?.apartment || ''} onChange={handleChange} />
+        </label>
+        <label>
+          CEP:
+          <input type="text" name="cep" value={address?.cep || ''} onChange={handleChange} />
+        </label>
       </div>
+
+      <button className={styles.saveButton}>Salvar Alterações</button>
     </div>
   );
 };

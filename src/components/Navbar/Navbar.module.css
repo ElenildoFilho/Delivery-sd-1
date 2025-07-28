@@ -1,5 +1,4 @@
 .navbar {
-  position: fixed;       
   top: 0;
   left: 0;
   width: 100%;          
@@ -11,7 +10,8 @@
   align-items: center;
   padding: 0 2rem;
   box-sizing: border-box;
-  z-index: 999;
+  position: relative; /* ou fixed, se ela for fixa no topo */
+  z-index: 1000; /* maior que o .overlay, que está com z-index: 100 */
 }
 
 .logoContainer {
@@ -33,7 +33,7 @@
 
 .navLinks {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
   list-style: none;
   margin: 0;
   padding: 0;

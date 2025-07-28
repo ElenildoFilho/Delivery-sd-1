@@ -28,82 +28,178 @@ const OrderHistory: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      const token = localStorage.getItem('token');
+  const fetchOrders = async () => {
+    const token = localStorage.getItem('token');
 
-      if (!token) {
-        setError('Você precisa estar logado para ver seu histórico.');
-        setLoading(false);
-        return;
+    if (!token) {
+      setError('Você precisa estar logado para ver seu histórico.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('https://delivery-api-i9pg.onrender.com/orders', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || 'Erro ao buscar pedidos.');
       }
 
-      try {
-        const response = await fetch('https://delivery-api-i9pg.onrender.com/orders', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const data = await response.json();
 
-        if (!response.ok) {
-          const err = await response.json();
-          throw new Error(err.message || 'Erro ao buscar pedidos.');
-        }
-
-        const data = await response.json();
-        if (!Array.isArray(data.orders)) {
-          throw new Error('Formato inesperado: esperava uma lista de pedidos em "orders".');
-        }
-
-        setOrders(data.orders);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      if (!Array.isArray(data.orders)) {
+        throw new Error('Formato inesperado: esperava uma lista de pedidos em "orders".');
       }
-    };
 
-    fetchOrders();
-  }, []);
+      console.log('Pedidos recebidos da API:', data.orders); // ← AQUI!
+
+      setOrders(data.orders);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchOrders();
+}, []);
 
   const handleRatingChange = (orderId: string, rating: number) => {
     setRatings(prev => ({ ...prev, [orderId]: rating }));
   };
 
   const submitRating = async (orderId: string) => {
-    const rating = ratings[orderId];
-    const token = localStorage.getItem('token');
+  const rating = ratings[orderId];
+  const token = localStorage.getItem('token');
 
-    if (!rating) {
-      alert('Por favor, selecione uma nota antes de enviar.');
-      return;
+  if (!rating) {
+    setError('Por favor, selecione uma nota antes de enviar.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://delivery-api-i9pg.onrender.com/orders/${orderId}/rating`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ rating , status: 'completed' }),
+    });
+
+    const data = await response.json();
+    console.log('Resposta da API ao enviar avaliação:', data);
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Erro ao enviar avaliação.');
     }
 
-    try {
-      const response = await fetch(`https://delivery-api-i9pg.onrender.com/orders/${orderId}/rating`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ rating }),
-      });
+    // Atualiza o estado da ordem com nova avaliação e status "completed"
+    setOrders(prevOrders =>
+      prevOrders.map(order =>
+        order.id === orderId
+          ? {
+              ...order,
+              rating: data.rating ?? rating,
+              status: 'completed',
+            }
+          : order
+      )
+    );
 
-      const data = await response.json();
+    // Remove nota do estado de avaliação local
+    setRatings(prev => {
+      const newRatings = { ...prev };
+      delete newRatings[orderId];
+      return newRatings;
+    });
+  } catch (err: any) {
+    setError(err.message);
+  }
+};
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao enviar avaliação.');
-      }
 
-      alert('Avaliação enviada com sucesso!');
-      setOrders(prev =>
-        prev.map(order =>
-          order.id === orderId ? { ...order, rating } : order
-        )
+  const renderOrders = (ordersToRender: Order[]) =>
+    ordersToRender.map(order => {
+      const createdDate = new Date(order.date);
+      const validDate = !isNaN(createdDate.getTime());
+      const total = order.items.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
       );
-    } catch (err: any) {
-      alert(`Erro ao enviar avaliação: ${err.message}`);
-    }
-  };
+
+      return (
+        <li key={order.id} className={styles.order}>
+          <div className={styles.header}>
+            <span className={styles.date}>
+              {validDate ? createdDate.toLocaleString() : 'Data inválida'}
+            </span>
+            {order.status && (
+              <span className={styles.status}>
+                {order.status === 'completed' || order.status === 'concluido'
+                  ? '✅ Concluído'
+                  : `🕒 ${order.status}`}
+              </span>
+            )}
+          </div>
+
+          <ul className={styles.items}>
+            {order.items.map(item => (
+              <li key={item.product.id} className={styles.item}>
+                <img
+                  src={item.product.imageUrl}
+                  alt={item.product.name}
+                  className={styles.image}
+                />
+                <div className={styles.details}>
+                  <span className={styles.name}>{item.product.name}</span>
+                  <span className={styles.quantity}>Qtd: {item.quantity}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className={styles.totalAndRating}>
+            <div className={styles.total}>Total: R$ {total.toFixed(2)}</div>
+
+            <div className={styles.ratingSection}>
+              {order.rating ? (
+                <div className={styles.stars}>
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <span
+                      key={star}
+                      className={`${styles.star} ${order.rating >= star ? styles.filled : ''}`}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <label>Avaliação:</label>
+                  <div className={styles.stars}>
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <span
+                        key={star}
+                        className={`${styles.star} ${ratings[order.id] >= star ? styles.filled : ''}`}
+                        onClick={() => handleRatingChange(order.id, star)}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <button onClick={() => submitRating(order.id)}>Enviar</button>
+                </>
+              )}
+            </div>
+          </div>
+        </li>
+      );
+    });
 
   if (loading) {
     return (
@@ -122,92 +218,36 @@ const OrderHistory: React.FC = () => {
     return <p className={styles.empty}>Você ainda não fez nenhum pedido.</p>;
   }
 
-  return (
-    <>
-      <div className={styles.waveBackground} />
-      <div className={styles.container}>
-        <h2 className={styles.title}>📦 Histórico de Pedidos</h2>
-        <ul className={styles.orderList}>
-          {orders.map(order => {
-            const createdDate = new Date(order.date);
-            const validDate = !isNaN(createdDate.getTime());
-            const total = order.items.reduce(
-              (sum, item) => sum + item.product.price * item.quantity,
-              0
-            );
+  const pendingOrders = orders.filter(order => order.status !== 'completed' && order.status !== 'concluido');
+  const completedOrders = orders.filter(order => order.status === 'completed' || order.status === 'concluido');
 
-            return (
-              <li key={order.id} className={styles.order}>
-                <div className={styles.header}>
-                  <span className={styles.date}>
-                    {validDate ? createdDate.toLocaleString() : 'Data inválida'}
-                  </span>
-                  {order.status && (
-                    <span className={styles.status}>
-                      {order.status === 'completed' || order.status === 'concluido'
-                        ? '✅ Concluído'
-                        : `🕒 ${order.status}`}
-                    </span>
-                  )}
-                </div>
+return (
+  <>
+    <div className={styles.waveBackground} />
+    <div className={styles.container}>
+      <h2 className={styles.title}>📦 Histórico de Pedidos</h2>
 
-                <ul className={styles.items}>
-                  {order.items.map(item => (
-                    <li key={item.product.id} className={styles.item}>
-                      <img
-                        src={item.product.imageUrl}
-                        alt={item.product.name}
-                        className={styles.image}
-                      />
-                      <div className={styles.details}>
-                        <span className={styles.name}>{item.product.name}</span>
-                        <span className={styles.quantity}>Qtd: {item.quantity}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+      {pendingOrders.length > 0 && (
+  <>
+    <h3 className={styles.sectionTitle}>🕒 Pendentes</h3>
+    <div className={styles.scrollableOrderList}>
+      <ul className={styles.orderList}>{renderOrders(pendingOrders)}</ul>
+    </div>
+  </>
+)}
 
-                <div className={styles.totalAndRating}>
-                  <div className={styles.total}>Total: R$ {total.toFixed(2)}</div>
+{completedOrders.length > 0 && (
+  <>
+    <h3 className={styles.sectionTitle}>✅ Concluídos</h3>
+    <div className={styles.scrollableOrderList}>
+      <ul className={styles.orderList}>{renderOrders(completedOrders)}</ul>
+    </div>
+  </>
+)}
 
-                  <div className={styles.ratingSection}>
-                    {order.rating ? (
-                      <div className={styles.stars}>
-                        {[1, 2, 3, 4, 5].map(star => (
-                          <span
-                            key={star}
-                            className={`${styles.star} ${order.rating >= star ? styles.filled : ''}`}
-                          >
-                            ★
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <>
-                        <label>Avaliação:</label>
-                        <div className={styles.stars}>
-                          {[1, 2, 3, 4, 5].map(star => (
-                            <span
-                              key={star}
-                              className={`${styles.star} ${ratings[order.id] >= star ? styles.filled : ''}`}
-                              onClick={() => handleRatingChange(order.id, star)}
-                            >
-                              ★
-                            </span>
-                          ))}
-                        </div>
-                        <button onClick={() => submitRating(order.id)}>Enviar</button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </>
-  );
+    </div>
+  </>
+);
 };
 
 export default OrderHistory;

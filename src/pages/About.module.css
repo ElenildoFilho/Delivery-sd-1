@@ -1,95 +1,96 @@
 .background {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1470&q=80');
+  inset: 0;
+  background-image: url('https://imgs.search.brave.com/0cSo8N1C-bG9iccxHwFXhBqLSl5_W2LsOCL9Ilth5FE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNy8w/OC8xMC8xNC8wOS9y/ZXN0YXVyYW50LTI2/MjMwNzFfNjQwLmpw/Zw'); /* Altere se quiser */
   background-size: cover;
   background-position: center;
-  z-index: -1;
+  filter: blur(6px);
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 0;
 }
 
-.blur {
-  width: 100vw;
-  height: 100vh;
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.15);
+.fadeIn {
+  opacity: 1;
+}
+
+.overlay {
+  position: relative;
+  z-index: 100;
+  min-height: 100vh;
+  padding: 3rem 2rem;
+  backdrop-filter: brightness(0.7);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  padding: 5rem 4rem 2rem; /* espaçamento inferior e espaço pra navbar */
-  box-sizing: border-box;
+  align-items: center;
+  color: white;
+  .overlay {
+  padding: 6rem 2rem 3rem; /* extra topo se necessário */
 }
 
-.mainContent {
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.content {
   display: flex;
-  gap: 4rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  margin-top: 80px; /* espaço abaixo do navbar fixo */
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.textColumn {
-  flex: 2;
+.imageSection {
+  text-align: center;
+}
+
+.mapImage {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mapText {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.cardsSection {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.imageColumn {
-  flex: 1.2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(6px);
-  padding: 1rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-  max-width: 400px;
-}
-
-.mapImage {
-  width: 100%;
+.card {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
   border-radius: 12px;
-  margin-bottom: 1rem;
-  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
 }
 
-.mapText {
-  color: #222;
-  font-size: 1.1rem;
+.card h2 {
+  margin-bottom: 0.8rem;
+  color: #fff;
+}
+
+.card p {
+  font-size: 1.05rem;
+  color: #e6e6e6;
+}
+
+@media (max-width: 768px) {
+  .cardsSection {
+    flex-direction: column;
+  }
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
   text-align: center;
-}
-
-/* Reaproveitando seus estilos */
-.textBlock {
-  background-color: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(8px);
-  padding: 2rem 3rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-  color: #222;
-  text-align: left;
-}
-
-.textBlock h2 {
-  margin-bottom: 1rem;
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.textBlock p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-}
-
-.blur::-webkit-scrollbar {
-  width: 8px;
-}
-
-.blur::-webkit-scrollbar-thumb {
-  background: rgba(100, 100, 100, 0.3);
-  border-radius: 4px;
 }

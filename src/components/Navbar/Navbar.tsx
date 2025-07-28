@@ -45,10 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
 
       <ul className={styles.navLinks}>
         <li>
-          <Link to="/About">Sobre</Link>
-        </li>
-        <li>
-          <Link to="/register">Registro</Link>
+          <Link to="/about">Sobre</Link>
         </li>
         <li>
           <Link to="/profile">Perfil</Link>
@@ -57,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
           <Link to="/history">Histórico</Link>
         </li>
         <li>
-          <Link to="/">Produtos</Link>
+          <Link to="/products">Produtos</Link>
         </li>
         {isLoggedIn ? (
           <li>

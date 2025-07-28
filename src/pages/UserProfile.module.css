@@ -1,54 +1,92 @@
 .container {
-  max-width: 600px;
+  max-width: 900px;
   margin: 2rem auto;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 7rem;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
   background-color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.4rem;
+  margin-bottom: 1.5rem;
 }
 
 .header {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
 }
 
 .profilePicture {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #007bff;
   background-color: #ccc;
   display: flex;
-  justify-content: center;
   align-items: center;
-  color: #666;
-  font-size: 18px;
-  font-weight: 700;
-  user-select: none;
+  justify-content: center;
+  color: #444;
+  font-weight: 600;
+  font-size: 16px;
 }
 
-.userDetails p {
-  margin: 0.2rem 0;
-  font-size: 1rem;
+.userDetails,
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.userDetails label,
+.address label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 0.95rem;
   color: #333;
 }
 
-.sectionTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: #222;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 0.25rem;
+input {
+  margin-top: 0.3rem;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.address p {
-  margin: 0.2rem 0;
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.saveButton {
+  margin-top: 2rem;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
   font-size: 1rem;
-  color: #444;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.saveButton:hover {
+  background-color: #0056b3;
 }

@@ -67,7 +67,7 @@ function ProductsList() {
     // TODO: integrar com API de criação de pedidos
   };
 
-  if (loading) return <p>Carregando produtos...</p>;
+  if (loading) return <div className={styles.spinner}></div>;
   if (error) return <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>;
 
   return (
