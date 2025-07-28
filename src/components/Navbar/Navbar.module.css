@@ -10,8 +10,8 @@
   align-items: center;
   padding: 0 2rem;
   box-sizing: border-box;
-  position: relative; /* ou fixed, se ela for fixa no topo */
-  z-index: 1000; /* maior que o .overlay, que está com z-index: 100 */
+  position: relative;
+  z-index: 1000; 
 }
 
 .logoContainer {

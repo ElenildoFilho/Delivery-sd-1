@@ -23,7 +23,6 @@ function ProductsList() {
     fetchProducts(token)
       .then(data => {
         console.log('Resposta fetchProducts:', data);
-        // Se data for um objeto com .products, pega o array, senão tenta usar data direto
         const productsArray = Array.isArray(data) ? data : data.products;
         if (!Array.isArray(productsArray)) {
           throw new Error('Formato de dados inesperado da API');
@@ -64,7 +63,6 @@ function ProductsList() {
 
   const handleCheckout = (items: SelectedItem[]) => {
     console.log('Enviando pedido para API:', items);
-    // TODO: integrar com API de criação de pedidos
   };
 
   if (loading) return <div className={styles.spinner}></div>;

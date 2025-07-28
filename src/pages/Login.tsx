@@ -30,10 +30,9 @@ function Login() {
   return (
     <div className={styles.loginPage}>
       <div className={styles.loginContainer}>
-                <LoginBox
+        <LoginBox
           onLogin={handleLogin}
           error={error || undefined}
-          success={success}
         />
         {error && <p className={styles.error}>{error}</p>}
         {success && <p className={styles.success}>Login realizado com sucesso!</p>}

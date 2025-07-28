@@ -55,7 +55,7 @@ const OrderHistory: React.FC = () => {
         throw new Error('Formato inesperado: esperava uma lista de pedidos em "orders".');
       }
 
-      console.log('Pedidos recebidos da API:', data.orders); // ← AQUI!
+      console.log('Pedidos recebidos da API:', data.orders);
 
       setOrders(data.orders);
     } catch (err: any) {
@@ -98,7 +98,6 @@ const OrderHistory: React.FC = () => {
       throw new Error(data.message || 'Erro ao enviar avaliação.');
     }
 
-    // Atualiza o estado da ordem com nova avaliação e status "completed"
     setOrders(prevOrders =>
       prevOrders.map(order =>
         order.id === orderId
@@ -111,7 +110,6 @@ const OrderHistory: React.FC = () => {
       )
     );
 
-    // Remove nota do estado de avaliação local
     setRatings(prev => {
       const newRatings = { ...prev };
       delete newRatings[orderId];

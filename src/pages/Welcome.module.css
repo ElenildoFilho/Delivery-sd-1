@@ -4,7 +4,7 @@
   background-image: url('https://imgs.search.brave.com/Sh-fqSbUjhbOF1pwe54cdaHPbWGrCBksdFsRsCPoeHA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93MC5w/ZWFrcHguY29tL3dh/bGxwYXBlci84NzEv/MTY2L0hELXdhbGxw/YXBlci1mb29kLXBp/enphLXN0aWxsLWxp/ZmUtdGh1bWJuYWls/LmpwZw'); /* Substitua pela imagem desejada */
   background-size: cover;
   background-position: center;
-  filter: blur(6px);
+  filter: blur(7px);
   opacity: 0;
   transition: opacity 1.5s ease;
   z-index: 1;

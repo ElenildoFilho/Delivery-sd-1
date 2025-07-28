@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // importar
+import { useNavigate } from 'react-router-dom';
 import styles from './Welcome.module.css';
 
 const Welcome: React.FC = () => {
   const [fadeIn, setFadeIn] = useState(false);
-  const navigate = useNavigate();  // instanciar o hook
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const timeout = setTimeout(() => setFadeIn(true), 100);
