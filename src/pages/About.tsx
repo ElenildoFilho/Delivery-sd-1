@@ -5,7 +5,7 @@ const About: React.FC = () => {
   const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setFadeIn(true), 100); // ativa o fade-in após o mount
+    setTimeout(() => setFadeIn(true), 100);
   }, []);
 
   return (

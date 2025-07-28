@@ -15,7 +15,6 @@ export async function login(email: string, password: string): Promise<{ token: s
   }
 
   if (!res.ok) {
-    // Tenta pegar mensagem de erro detalhada da API, se existir
     throw new Error(data.message || 'Login failed');
   }
 
