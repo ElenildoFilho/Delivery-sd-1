@@ -18,7 +18,7 @@ function Login() {
       setError(null);
 
       setTimeout(() => {
-        navigate('/');
+        navigate('/products');
       }, 1500);
     } catch (err: any) {
       console.error('Erro detalhado no login:', err);
