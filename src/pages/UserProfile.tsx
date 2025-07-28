@@ -20,7 +20,6 @@ const UserProfile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Campos editáveis
   const [formData, setFormData] = useState<UserProfileData | null>(null);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 .login-box form {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Espaço entre os campos */
+  gap: 1rem; 
 }
 
 .logo-container {

@@ -21,7 +21,7 @@ const LoginBox: React.FC<LoginBoxProps> = ({ onLogin, error, success }) => {
     <div className={styles['login-box']}>
       <div className={styles['logo-container']}>
         <img
-          src="..\src\assets\logo.png" // ou use: import logo from '@/assets/sdelivery-logo.png'
+          src="..\src\assets\logo.png" 
           alt="Logo SDelivery"
           className={styles.logo}
         />
