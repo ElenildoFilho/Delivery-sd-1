@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from './LoginBox.module.css' 
-import { Link } from 'react-router-dom';
+import styles from './LoginBox.module.css'
+import { Link } from 'react-router-dom'
 
 interface LoginBoxProps {
   onLogin: (email: string, password: string) => void
@@ -19,8 +19,15 @@ const LoginBox: React.FC<LoginBoxProps> = ({ onLogin, error, success }) => {
 
   return (
     <div className={styles['login-box']}>
+      <div className={styles['logo-container']}>
+        <img
+          src="..\src\assets\logo.png" // ou use: import logo from '@/assets/sdelivery-logo.png'
+          alt="Logo SDelivery"
+          className={styles.logo}
+        />
+      </div>
+
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
         <input
           type="email"
           placeholder="Email"

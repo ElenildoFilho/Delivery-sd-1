@@ -94,7 +94,7 @@ const UserProfile: React.FC = () => {
       <div className={styles.header}>
         {profilePictureUrl ? (
           <img
-            src={profilePictureUrl}
+            src={profilePictureUrl || '@/assets/holologo.png'}
             alt={`${formData.name} - Foto de perfil`}
             className={styles.profilePicture}
           />
@@ -126,11 +126,21 @@ const UserProfile: React.FC = () => {
         </label>
         <label>
           Complemento:
-          <input type="text" name="complement" value={address?.complement || ''} onChange={handleChange} />
+          <input
+            type="text"
+            name="complement"
+            value={address?.complement || ''}
+            onChange={handleChange}
+          />
         </label>
         <label>
           Apartamento:
-          <input type="text" name="apartment" value={address?.apartment || ''} onChange={handleChange} />
+          <input
+            type="text"
+            name="apartment"
+            value={address?.apartment || ''}
+            onChange={handleChange}
+          />
         </label>
         <label>
           CEP:

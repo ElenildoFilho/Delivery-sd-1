@@ -1,8 +1,8 @@
 .container {
   max-width: 900px;
   margin: 2rem auto;
-  margin-top: 7rem;
   padding: 2rem;
+  margin-bottom: 2rem;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
   background-color: #fff;

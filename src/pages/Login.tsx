@@ -30,8 +30,7 @@ function Login() {
   return (
     <div className={styles.loginPage}>
       <div className={styles.loginContainer}>
-        <h2 className={styles.title}>Bem-vindo de volta</h2>
-        <LoginBox
+                <LoginBox
           onLogin={handleLogin}
           error={error || undefined}
           success={success}
